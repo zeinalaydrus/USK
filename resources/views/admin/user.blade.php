@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalAdd">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="modalAdd">Tambah User</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin/user/create') }}" method="POST" enctype="multipart/form-data">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
                     </div>
 
                 </form>
@@ -53,7 +53,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalAdd">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="modalAdd">Edit User</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ url('admin/user/edit/' . $user->id) }}" method="POST" enctype="multipart/form-data">
@@ -87,9 +87,38 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach ($users as $user)
+        <div class="modal fade" id="modalVerif{{ $user->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h2 class="modal-title" style="color: white">Verfikasi</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body mx-5">
+                        <span class="warning">
+
+                        </span>
+                        <h2 style="text-align: center">Apakah kamu yakin ingin Memverfikasi user ini? </h2>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{{ url('admin/user/verif/' . $user->id) }}" method="POST"
+                            style="display: inline-block">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" value="{{ $user->verif }}" name="verif">
+                            <button type="submit" class="btn btn-primary">yakin
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,7 +134,7 @@
                     </div>
                     <div class="modal-body mx-5">
                         <span class="warning">
-                            {{-- <img src="assets/images/warning.png"> --}}
+
                         </span>
                         <h2 style="text-align: center"> Apakah kamu yakin ingin menghapus data ini? </h2>
                     </div>
@@ -145,6 +174,7 @@
                         <th>Kelas</th>
                         <th>Alamat</th>
                         <th>Kode</th>
+                        <th>Verif</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -158,6 +188,11 @@
                             <td>{{ $user->kelas }}</td>
                             <td>{{ $user->alamat }}</td>
                             <td>{{ $user->kode }}</td>
+                            <td>
+                                <button class="btn btn-{{ $user->verif == 'terverifikasi' ? 'success' : 'danger' }}"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalVerif{{ $user->id }}">{{ $user->verif }}</button>
+                            </td>
                             <td> <button class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#modalDelete{{ $user->id }}">Hapus</button>
                                 <button class="btn btn-warning" data-bs-toggle="modal"

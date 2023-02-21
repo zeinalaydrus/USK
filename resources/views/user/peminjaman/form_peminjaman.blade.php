@@ -32,7 +32,7 @@
                             <option value="rusak">Rusak</option>
                         </select>
                     </div>
-                    <input type="hidden" name="user_id"  value="{{ Auth::user()->id }}">
+                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                     <button type="submit" class="btn btn-primary">Select</button>
                 </form>
             </div>

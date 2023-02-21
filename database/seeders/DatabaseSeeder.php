@@ -76,17 +76,17 @@ class DatabaseSeeder extends Seeder
 
 
         Kategori::create([
-            'kode' => 'KT001',
+            'kode' => 'KTG001',
             'nama' => 'Fiksi',
         ]);
 
         Kategori::create([
-            'kode' => 'KT002',
+            'kode' => 'KTG002',
             'nama' => 'Non Fiksi',
         ]);
 
         Kategori::create([
-            'kode' => 'KT003',
+            'kode' => 'KTG003',
             'nama' => 'Pengetahuan',
         ]);
 

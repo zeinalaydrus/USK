@@ -34,7 +34,9 @@ class PeminjamanController extends Controller
 
     public function submit(Request $request)
     {
-        $cek = Peminjaman::where('user_id', Auth::user()->id)->where('buku_id', $request->buku_id)->where('tanggal_pengembalian', null)->first();
+        $cek = Peminjaman::where('user_id', Auth::user()->id)
+            ->where('buku_id', $request->buku_id)
+            ->where('tanggal_pengembalian', null)->first();
         if ($cek == null) {
             $peminjaman = Peminjaman::create($request->all());
 
@@ -55,7 +57,7 @@ class PeminjamanController extends Controller
             if ($peminjaman) {
                 return redirect()->route('user/peminjaman')
                     ->with('status', 'success')
-                    ->with('message', 'Berhasil Menambah Data');
+                    ->with('message', 'Berhasil Meminjam Buku');
             }
         }
         return redirect()->route('user/peminjaman')

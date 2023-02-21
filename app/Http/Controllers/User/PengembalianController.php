@@ -25,7 +25,10 @@ class PengembalianController extends Controller
 
     public function store(Request $request)
     {
-        $cek = Peminjaman::where('user_id', $request->user_id)->where('buku_id', $request->buku_id)->first();
+        $cek = Peminjaman::where('user_id', $request->user_id)
+            ->where('buku_id', $request->buku_id)
+            ->where('tanggal_pengembalian', null)
+            ->first();
 
         $cek->update([
             'tanggal_pengembalian'  => $request->tanggal_pengembalian,
@@ -53,13 +56,20 @@ class PengembalianController extends Controller
             ]);
         }
 
-        if ($request->kondisi_buku_saat_dikembalikan == 'hilang') {
+        if ($cek->kondisi_buku_saat_dipinjam == 'rusak' && $request->kondisi_buku_saat_dikembalikan == 'rusak') {
             $buku = Buku::where('id', $request->buku_id)->first();
             $buku->update([
-                'j_buku_rusak' => $buku->j_buku_rusak - 1
+                'j_buku_rusak' => $buku->j_buku_rusak + 1
             ]);
             $cek->update([
-                'denda' => 100000
+                'denda' => 0
+            ]);
+        }
+
+        if ($request->kondisi_buku_saat_dikembalikan == 'hilang') {
+            $buku = Buku::where('id', $request->buku_id)->first();
+            $cek->update([
+                'denda' => 50000
             ]);
         }
 

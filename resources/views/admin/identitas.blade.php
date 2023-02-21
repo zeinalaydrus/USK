@@ -27,7 +27,7 @@
                                     <tr>
                                         <th>Nama Lengkap</th>
                                         <td><input type="text" class="form-control" name="nama_app"
-                                                value="{{ $identitas->nama_app }}" >
+                                                value="{{ $identitas->nama_app }}">
                                         </td>
                                     </tr>
                                     <tr>
@@ -64,8 +64,13 @@
                         <h3>Profil Saya</h3>
                     </div>
                     <div class="card-body">
-                        <img class="mb-5 rounded-circle" height="150" width="150"
-                            src="{{ '/storage/foto/' . $identitas->foto }}" alt="">
+                        @if ($identitas->foto == null)
+                            <img class="mb-5 text-align-center" height="200" width="200" src="/img/perpus.png"
+                                alt="">
+                        @else
+                            <img class="mb-5 rounded-circle" height="150" width="150"
+                                src="{{ '/storage/foto/' . $identitas->foto }}" alt="">
+                        @endif
                         <p>
                             <b>Kode Applikasi: {{ $identitas->nama_app }}</b>
                         </p>

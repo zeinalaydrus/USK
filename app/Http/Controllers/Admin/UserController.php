@@ -62,6 +62,27 @@ class UserController extends Controller
             ->with('message', 'Gagal Mengubah Data');
     }
 
+    public function verif($id, Request $request)
+    {
+        $anggota = User::where('id', $id)->first();
+
+        if ($anggota != null) {
+
+            if ($request->verif == 'belum terverif') {
+                $anggota->update([
+                    'verif' => 'terverifikasi'
+                ]);
+            }
+
+            return redirect()
+                ->back()
+                ->with("status", "success")
+                ->with("message", "Berhasil Memverifikasi User!");
+        }
+        return redirect()->back()
+            ->with("status", "danger")
+            ->with("message", "Gagal Memverifikasi User!");
+    }
     public function destroy($id)
     {
         User::find($id)->delete();

@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalAdd">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="modalAdd">Tambah Pemberitahuan</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin/pemberitahuan/create') }}" method="POST" enctype="multipart/form-data">
@@ -59,14 +59,16 @@
                                 <label for="">status</label>
                                 <select class="form-select" name="status" id="">
                                     <option value="" disabled selected>-- Pilih Opsi --</option>
-                                    <option value="aktif" {{ $pemberitahuan->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                                    <option value="nonaktif" {{ $pemberitahuan->status == 'nonaktif' ? 'selected' : '' }}>Non Aktif</option>
+                                    <option value="aktif" {{ $pemberitahuan->status == 'aktif' ? 'selected' : '' }}>Aktif
+                                    </option>
+                                    <option value="nonaktif" {{ $pemberitahuan->status == 'nonaktif' ? 'selected' : '' }}>
+                                        Non Aktif</option>
                                 </select>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
 
                     </form>
@@ -85,7 +87,7 @@
                     </div>
                     <div class="modal-body mx-5">
                         <span class="warning">
-                            {{-- <img src="assets/images/warning.png"> --}}
+
                         </span>
                         <h2 style="text-align: center"> Apakah kamu yakin ingin menghapus data ini? </h2>
                     </div>
@@ -130,7 +132,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $pemberitahuan->isi }}</td>
-                            <td>{{ $pemberitahuan->status }}</td>
+                            <td><button class="btn btn-{{ $pemberitahuan->status == 'aktif' ? 'success' : 'danger' }}">{{ $pemberitahuan->status }}</button></td>
                             <td> <button class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#modalDelete{{ $pemberitahuan->id }}">Hapus</button>
                                 <button class="btn btn-warning" data-bs-toggle="modal"

@@ -41,7 +41,9 @@
                             <div class="col-md-8 form-group">
                                 <select class="form-select" name="kondisi_buku_saat_dikembalikan">
                                     <option value="" disabled selected>-- Pilih Opsi --</option>
-                                    <option value="baik">Baik</option>
+                                    @foreach ($juduls as $form)
+                                    <option {{ $form->kondisi_buku_saat_dipinjam == 'rusak' ? 'hidden' : '' }} value="baik">Baik</option>
+                                    @endforeach
                                     <option value="rusak">Rusak</option>
                                     <option value="hilang">Hilang</option>
                                 </select>

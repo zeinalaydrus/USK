@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalAdd">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="modalAdd">Tambah Admin</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin/admin/create') }}" method="POST" enctype="multipart/form-data">
@@ -25,7 +25,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
                     </div>
 
                 </form>
@@ -39,10 +39,10 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalAdd">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="modalAdd">Edit Admin</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{ url('admin/admin/edit/'. $admin->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('admin/admin/edit/' . $admin->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('put')
 
@@ -60,7 +60,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
 
                     </form>
@@ -79,7 +79,7 @@
                     </div>
                     <div class="modal-body mx-5">
                         <span class="warning">
-                            {{-- <img src="assets/images/warning.png"> --}}
+
                         </span>
                         <h2 style="text-align: center"> Apakah kamu yakin ingin menghapus data ini? </h2>
                     </div>

@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalAdd">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="modalAdd">Tambah Kategori</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin/kategori/create') }}" method="POST" enctype="multipart/form-data">
@@ -17,15 +17,10 @@
                             <input type="text" class="form-control" id="formGroupExampleInput" placeholder=""
                                 name="nama" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput" class="form-label">Kode</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder=""
-                                name="kode" required>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
                     </div>
 
                 </form>
@@ -43,7 +38,7 @@
                     </div>
                     <div class="modal-body mx-5">
                         <span class="warning">
-                            {{-- <img src="assets/images/warning.png"> --}}
+
                         </span>
                         <h2 style="text-align: center"> Apakah kamu yakin ingin menghapus data ini? </h2>
                     </div>

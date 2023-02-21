@@ -9,8 +9,13 @@ use App\Http\Controllers\User\ProfilController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\IdentitasController;
 use App\Http\Controllers\Admin\PemberitahuanController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\BukuController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PenerbitController;
+use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\User\PesanController;
+use App\Http\Controllers\Admin\PesanController as AdminPesanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,11 +50,10 @@ Route::prefix('/user')->group(function () {
     Route::post('pengembalian_form', [PengembalianController::class, 'store'])->name('user/pengembalian_form');
 
 
-    Route::get('/pesan/masuk', [PesanController::class, 'index'])->name('user/pesan/masuk');
-    Route::get('/pesan/terkirim', [PesanController::class, 'terkirim'])->name('user/pesan/terkirim');
-    Route::post('/pesan/masuk/ubah_status', [PesanController::class, 'update'])->name('user/pesan/masuk/update');
-    Route::post('/pesan/kirim', [PesanController::class, 'store'])->name('user/pesan/kirim');
-    Route::delete('/pesan/delete/{id}', [PesanController::class, 'destroy'])->name('user/pesan/delete');
+    Route::get('/pesan/terkirim', [PesanController::class, 'pesan_terkirim'])->name('user/pesan_terkirim');
+    Route::post('/kirim-pesan', [PesanController::class, 'kirim_pesan'])->name('user.kirim_pesan');
+    Route::get('/pesan/masuk', [PesanController::class, 'pesan_masuk'])->name('user/pesan_masuk');
+    Route::post('/ubah-status', [PesanController::class, 'ubah_status'])->name('user.ubah_status');
 
 
     Route::get('profil', [ProfilController::class, 'profil'])->name('user/profil');
@@ -62,6 +66,7 @@ Route::prefix('/admin')->group(function () {
     Route::get('user', [UserController::class, 'user'])->name('admin/user');
     Route::post('user/create', [UserController::class, 'create'])->name('admin/user/create');
     Route::put('user/edit/{id}', [UserController::class, 'update'])->name('admin/user/edit');
+    Route::put('user/verif/{id}', [UserController::class, 'verif'])->name('admin/user/verif');
     Route::delete('user/delete/{id}', [UserController::class, 'destroy'])->name('admin/user/delete');
 
     Route::get('admin', [AdminController::class, 'admin'])->name('admin/admin');
@@ -75,10 +80,33 @@ Route::prefix('/admin')->group(function () {
     Route::put('buku/edit/{id}', [BukuController::class, 'update'])->name('admin/buku/edit');
     Route::delete('buku/delete/{id}', [BukuController::class, 'destroy'])->name('admin/buku/delete');
 
+    Route::get('penerbit', [PenerbitController::class, 'index'])->name('admin/penerbit');
+    Route::post('penerbit/create', [PenerbitController::class, 'create'])->name('admin/penerbit/create');
+    Route::put('penerbit/verif/{id}', [PenerbitController::class, 'verif'])->name('admin/penerbit/verif');
+    Route::put('penerbit/edit/{id}', [PenerbitController::class, 'update'])->name('admin/penerbit/edit');
+    Route::delete('penerbit/delete/{id}', [PenerbitController::class, 'destroy'])->name('admin/penerbit/delete');
+
+    Route::get('kategori', [KategoriController::class, 'index'])->name('admin/kategori');
+    Route::post('kategori/create', [KategoriController::class, 'create'])->name('admin/kategori/create');
+    Route::delete('kategori/delete/{id}', [KategoriController::class, 'destroy'])->name('admin/kategori/delete');
+
+    Route::get('laporan', [LaporanController::class, 'index'])->name('admin/laporan');
+    Route::post('/laporan-pdf', [LaporanController::class, 'laporan'])->name('admin.lap_pdf');
+    Route::post('/peminjaman', [LaporanController::class, 'laporan'])->name('admin/laporan_peminjaman');
+    Route::post('/pengembalian', [LaporanController::class, 'laporan'])->name('admin.laporan_pengembalian');
+    Route::post('/laporan_user', [LaporanController::class, 'laporan'])->name('admin.laporan_user');
+
+    Route::get('/pesan/masuk', [AdminPesanController::class, 'pesanMasuk'])->name('admin/pesan/masuk');
+    Route::post('/admin-status', [AdminPesanController::class, 'admin_status'])->name('admin.ubah_status');
+    Route::get('/pesan/terkirim', [AdminPesanController::class, 'pesanTerkirim'])->name('admin/pesan/terkirim');
+    Route::post('/kirim-pesan', [AdminPesanController::class, 'kirimPesan'])->name('admin.kirim_pesan');
+
     Route::get('pemberitahuan', [PemberitahuanController::class, 'index'])->name('admin/pemberitahuan');
     Route::post('pemberitahuan/create', [PemberitahuanController::class, 'create'])->name('admin/pemberitahuan/create');
     Route::put('pemberitahuan/edit/{id}', [PemberitahuanController::class, 'update'])->name('admin/pemberitahuan/edit');
     Route::delete('pemberitahuan/delete/{id}', [PemberitahuanController::class, 'destroy'])->name('admin/pemberitahuan/delete');
+
+
 
     Route::get('identitas', [IdentitasController::class, 'index'])->name('admin/identitas');
     Route::put('identitas/update', [IdentitasController::class, 'update'])->name('admin/identitas/update');

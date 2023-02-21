@@ -18,6 +18,37 @@
 
 </head>
 
+<style>
+    .badge-notification {
+        position: absolute;
+    }
+</style>
+
+<style>
+    .choices__input {
+        color: black;
+    }
+</style>
+</head>
+
+@php
+    
+    use App\Models\Pesan;
+    $pesan = Pesan::where('penerima_id', Auth::user()->id)
+        ->where('status', 'terkirim')
+        ->get();
+    use App\Models\Pemberitahuan;
+    $pemberitahuan = Pemberitahuan::orderBy('id', 'DESC')
+        ->take(5)
+        ->get();
+    
+    // use App\Models\Peminjaman;
+    // $peminjaman = Peminjaman::where('user_id'  $request->user_id)
+    // ->take()
+    // ->get();
+    
+@endphp
+
 <body>
     <div id="app">
         <div id="sidebar" class="active">
@@ -28,8 +59,8 @@
 
                             <h2>Perpus</h2>
                         </div>
-                        <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
-                            {{-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20"
                                 height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
                                 <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
@@ -44,12 +75,19 @@
                                         </path>
                                     </g>
                                 </g>
-                            </svg> --}}
+                            </svg>
                             <div class="form-check form-switch fs-6">
-                                <input class="form-check-input  me-0" type="checkbox" id="toggle-dark" hidden>
+                                <input class="form-check-input me-0" type="checkbox" id="toggle-dark"
+                                    style="cursor: pointer" />
                                 <label class="form-check-label"></label>
                             </div>
-
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                aria-hidden="true" role="img" class="iconify iconify--mdi" width="20"
+                                height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
+                                </path>
+                            </svg>
                         </div>
                         <div class="sidebar-toggler x">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i
@@ -165,13 +203,57 @@
                                 <li class="nav-item dropdown me-1">
                                     <a class="nav-link active dropdown-toggle text-gray-600" href="#"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class='bi bi-envelope bi-sub fs-4'></i>
+                                        <i class="bi bi-envelope bi-sub fs-4"></i>
+                                        <span class="badge badge-notification bg-danger">
+
+                                            {{ count($pesan) }}
+                                        </span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        @php
+                                            $pesans = \App\Models\Pesan::where('status', 'terkirim')
+                                                ->where('pengirim_id', '!=', Auth::user()->id)
+                                                ->where('penerima_id', Auth::user()->id)
+                                                ->orderBy('created_at', 'desc')
+                                                ->get();
+                                        @endphp
+
                                         <li>
                                             <h6 class="dropdown-header">Mail</h6>
                                         </li>
-                                        <li><a class="dropdown-item" href="#">No new mail</a></li>
+                                        @foreach ($pesan as $p)
+                                            <li>
+                                                <form
+                                                    action="{{ Auth::user()->role == 'user' ? route('user.ubah_status') : route('admin.ubah_status') }}"
+                                                    method="POST">
+                                                    @csrf <button class="dropdown-item" type="submit"> <input
+                                                            type="hidden" name="id"
+                                                            value="{{ $p->id }}">
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                                <div class="user-img d-flex align-items-center">
+                                                                    <div class="avatar avatar-lg"> <img
+                                                                            src="/assets/images/faces/1.jpg">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col ms-2">
+                                                                <p class="mb-0 font-bold">
+                                                                    {{ $p->pengirim->username }}</p>
+                                                                <p class="mt-0 mb-0 font-thin text-sm">
+                                                                    {{ $p->isi }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </button> </form>
+                                            </li>
+                                        @endforeach
+
+                                        @if (count($pesan) == 0)
+                                            <li><a class="dropdown-item" href="#">
+                                                    No New Mail
+                                                </a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown me-3">
@@ -224,7 +306,7 @@
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img src="/assets/images/faces/1.jpg">
+                                                <img src="{{ \Auth::user()->foto }}">
                                             </div>
                                         </div>
                                     </div>

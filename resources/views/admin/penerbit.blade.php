@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalAdd">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="modalAdd">Tambah Penerbit</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('admin/penerbit/create') }}" method="POST" enctype="multipart/form-data">
@@ -29,7 +29,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Tambah</button>
                     </div>
 
                 </form>
@@ -61,15 +61,16 @@
                                 <label for="formGroupExampleInput" class="form-label">Verif</label>
                                 <select class="form-select" name="verif" id="">
                                     <option value="" disabled selected>-- Pilih Opsi --</option>
-                                    <option value="Terverifikasi">Terverifikasi</option>
-                                    <option value="Belum Terverifikasi">Belum Terverifikasi</option>
+                                    <option value="Terverifikasi" {{ $penerbit->verif == 'Terverifikasi' ? 'selected' : '' }}>
+                                        Terverifikasi</option>
+                                    <option value="Belum Terverifikasi" {{ $penerbit->verif == 'Belum Terveriwefikasi' ? 'selected' : '' }}>Belum Terverifikasi</option>
                                 </select>
                             </div>
 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
 
                     </form>
@@ -77,6 +78,37 @@
             </div>
         </div>
     @endforeach
+
+    @foreach ($penerbits as $penerbit)
+    <div class="modal fade" id="modalVerif{{ $penerbit->id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h2 class="modal-title" style="color: white">Verfikasi</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body mx-5">
+                    <span class="warning">
+                        {{-- <img src="assets/images/warning.png"> --}}
+                    </span>
+                    <h2 style="text-align: center">Apakah kamu yakin ingin Memverfikasi Penerbit ini? </h2>
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ url('admin/penerbit/verif/' . $penerbit->id) }}" method="POST"
+                        style="display: inline-block">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" value="{{ $penerbit->verif }}" name="verif">
+                        <button type="submit"
+                            class="btn btn-primary">yakin
+                        </button>
+                    </form>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endforeach
 
     @foreach ($penerbits as $penerbit)
         <div class="modal fade" id="modalDelete{{ $penerbit->id }}" tabindex="-1" aria-hidden="true">
@@ -133,7 +165,10 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $penerbit->nama }}</td>
                             <td>{{ $penerbit->kode }}</td>
-                            <td>{{ $penerbit->verif }}</td>
+                            <td><button 
+                                    class="btn btn-{{ $penerbit->verif == 'Terverifikasi' ? 'success' : 'danger' }}" data-bs-toggle="modal"
+                                    data-bs-target="#modalVerif{{ $penerbit->id }}">{{ $penerbit->verif }}</button>
+                            </td>
                             <td> <button class="btn btn-danger" data-bs-toggle="modal"
                                     data-bs-target="#modalDelete{{ $penerbit->id }}">Hapus</button>
                                 <button class="btn btn-warning" data-bs-toggle="modal"
